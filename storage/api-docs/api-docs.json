@@ -1,0 +1,303 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Currency Exchange API",
+        "version": "1.0"
+    },
+    "paths": {
+        "/api/currencies": {
+            "get": {
+                "tags": [
+                    "currencies"
+                ],
+                "summary": "Get list of currencies",
+                "operationId": "23e8cf721bca47bcc3bb8bfb6a3b39d9",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/CurrencyResource"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/orders/calculation": {
+            "get": {
+                "tags": [
+                    "orders"
+                ],
+                "summary": "Get order calculation",
+                "operationId": "fb6f62065b77b99907f97c0e13adf0a0",
+                "parameters": [
+                    {
+                        "name": "currency_code",
+                        "in": "query",
+                        "description": "Selected currency for order",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "EUR"
+                        }
+                    },
+                    {
+                        "name": "amount",
+                        "in": "query",
+                        "description": "Amount",
+                        "required": true,
+                        "schema": {
+                            "type": "number",
+                            "example": 100
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Order calculation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/CalculationResource"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocessable Content",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "The currency code field is required. (and 1 more error)"
+                                        },
+                                        "errors": {
+                                            "type": "object",
+                                            "example": {
+                                                "currency_code": [
+                                                    "The currency code field is required."
+                                                ],
+                                                "amount": [
+                                                    "The currency code field is required."
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/orders": {
+            "post": {
+                "tags": [
+                    "orders"
+                ],
+                "summary": "Place an order",
+                "operationId": "2123ba58dadb22bd6f2c8081af562230",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/OrderRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Order created",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/OrderResource"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocessable Content",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "The currency code field is required. (and 1 more error)"
+                                        },
+                                        "errors": {
+                                            "type": "object",
+                                            "example": {
+                                                "currency_code": [
+                                                    "The currency code field is required."
+                                                ],
+                                                "amount": [
+                                                    "The currency code field is required."
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "OrderRequest": {
+                "title": "OrderRequest",
+                "required": [
+                    "currency_code",
+                    "amount"
+                ],
+                "properties": {
+                    "currency_code": {
+                        "title": "currency_code",
+                        "type": "string",
+                        "example": "EUR"
+                    },
+                    "amount": {
+                        "title": "amount",
+                        "type": "number",
+                        "example": "150"
+                    }
+                },
+                "type": "object"
+            },
+            "CalculationResource": {
+                "title": "CalculationResource",
+                "properties": {
+                    "exchange_rate": {
+                        "title": "exchange_rate",
+                        "type": "number",
+                        "example": 0.88
+                    },
+                    "surcharge_amount": {
+                        "title": "surcharge_amount",
+                        "type": "string",
+                        "example": "1.25$"
+                    },
+                    "total_paid_amount": {
+                        "title": "total_paid_amount",
+                        "type": "string",
+                        "example": "125.55$"
+                    },
+                    "discount_percent": {
+                        "title": "discount_percent",
+                        "type": "string",
+                        "example": "0.88%"
+                    },
+                    "discount_amount": {
+                        "title": "discount_amount",
+                        "type": "string",
+                        "example": "1$"
+                    }
+                },
+                "type": "object"
+            },
+            "CurrencyResource": {
+                "title": "CurrencyResource",
+                "properties": {
+                    "id": {
+                        "title": "id",
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "code": {
+                        "title": "code",
+                        "type": "string",
+                        "example": "EUR"
+                    },
+                    "name": {
+                        "title": "name",
+                        "type": "string",
+                        "example": "Euro"
+                    },
+                    "exchange_rate": {
+                        "title": "exchange_rate",
+                        "type": "number",
+                        "example": 0.88
+                    }
+                },
+                "type": "object"
+            },
+            "OrderResource": {
+                "title": "OrderResource",
+                "properties": {
+                    "id": {
+                        "title": "id",
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "currency_code": {
+                        "title": "currency_code",
+                        "type": "string",
+                        "example": "EUR"
+                    },
+                    "name": {
+                        "title": "name",
+                        "type": "string",
+                        "example": "Euro"
+                    },
+                    "exchange_rate": {
+                        "title": "exchange_rate",
+                        "type": "number",
+                        "example": 0.88
+                    },
+                    "surcharge_percent": {
+                        "title": "surcharge_percent",
+                        "type": "string",
+                        "example": "0.5%"
+                    },
+                    "surcharge_amount": {
+                        "title": "surcharge_amount",
+                        "type": "string",
+                        "example": "1.5$"
+                    },
+                    "total_paid_amount": {
+                        "title": "total_paid_amount",
+                        "type": "string",
+                        "example": "15.34$"
+                    },
+                    "created_at": {
+                        "title": "created_at",
+                        "type": "string",
+                        "example": "2023-04-12 01:00:41"
+                    }
+                },
+                "type": "object"
+            }
+        }
+    }
+}
