@@ -20,7 +20,7 @@ class OrderObserver
     public function created(Order $order)
     {
         if (AvailableCurrencies::tryFrom($order->purchasedCurrency->code)?->sendEmail()) {
-//            Mail::to($order->user->email)->send(new OrderDetails($order));
+            Mail::to($order->user->email)->send(new OrderDetails($order));
         }
     }
 }

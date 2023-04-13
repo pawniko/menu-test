@@ -71,7 +71,7 @@ After installation you should be able to open main page on: http://localhost
 Exchange rates are automatically updated daily using CurrencyLayer API, but you can also run following command manually:
 
 ```sh
-php artisan update:exchage_rates
+php artisan update:exchange_rates
 ```
 
 If you want to execute this command more often, you can change it:
@@ -91,7 +91,7 @@ http://localhost/api/documentation
 
 ### Unit test
 
-The most important calculate() function from OrderService is covered by unit test which can be run with following command:
+The most important getCalculation() function from OrderService is covered by unit test which can be run with following command:
 
 ```sh
 php artisan test --filter OrderCalculationTest

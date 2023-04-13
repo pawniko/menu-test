@@ -14,15 +14,13 @@ class OrderService
     ) {
     }
 
-    public function getCalculation(array $data): array
+    public function getCalculation(string $currencyCode, float $amount): array
     {
-        $currency     = $this->currencyRepository->findBy(['code' => $data['currency_code']])->first();
-        $currencyEnum = AvailableCurrencies::from($data['currency_code']);
-
-        $currencyAmount  = $data['amount'];
-        $exchangeRate    = $currency->exchange_rate;
+        $currency        = $this->currencyRepository->findBy(['code' => $currencyCode])->first();
+        $currencyEnum    = AvailableCurrencies::from($currencyCode);
+        $currencyAmount  = $amount;
         $surcharge       = $currencyEnum->surchargePercent();
-        $price           = $currencyAmount / $exchangeRate;
+        $price           = $currencyAmount / $currency->exchange_rate;
         $surchargeAmount = $price * ($surcharge / 100);
         $totalPaidAmount = $price + $surchargeAmount;
 
@@ -35,7 +33,7 @@ class OrderService
             'from_currency'         => config('currency.default'),
             'purchased_currency_id' => $currency->id,
             'currency_amount'       => $currencyAmount,
-            'exchange_rate'         => $exchangeRate,
+            'exchange_rate'         => $currency->exchange_rate,
             'surcharge_percent'     => $surcharge,
             'surcharge_amount'      => $surchargeAmount,
             'total_paid_amount'     => $totalPaidAmount,
@@ -44,9 +42,9 @@ class OrderService
         ];
     }
 
-    public function create(array $data)
+    public function create(string $currencyCode, float $amount)
     {
-        $data = $this->getCalculation($data);
+        $data = $this->getCalculation($currencyCode, $amount);
 
         return $this->orderRepository->create($data);
     }

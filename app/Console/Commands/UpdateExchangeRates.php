@@ -19,6 +19,7 @@ class UpdateExchangeRates extends Command
      * Execute the console command.
      *
      * @return void
+     *
      * @throws \Exception
      */
     public function handle(
@@ -27,13 +28,13 @@ class UpdateExchangeRates extends Command
     ) {
         $exchangeRatesFromApi = $currencyLayerApiClient->getExchangeRates(config('currency.default'));
 
-        $modifiedKeys = array_map(function ($key) {
-            return substr($key, 3);
-        }, array_keys($exchangeRatesFromApi));
+        $modifiedKeys = array_map(
+            fn ($key) => substr($key, 3),
+            array_keys($exchangeRatesFromApi)
+        );
 
         $exchangeRates = array_combine($modifiedKeys, $exchangeRatesFromApi);
 
         $currencyRepository->updateExchangeRates($exchangeRates);
     }
-
 }

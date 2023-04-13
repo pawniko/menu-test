@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Enums\AvailableCurrencies;
-use App\Enums\OrderStatus;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\OrderRequest;
 use App\Http\Resources\CalculationResource;
@@ -79,7 +77,10 @@ class OrderController extends Controller
      */
     public function calculation(OrderRequest $request)
     {
-        $calculation = $this->orderService->getCalculation($request->validated());
+        $calculation = $this->orderService->getCalculation(
+            $request->validated('currency_code'),
+            $request->validated('amount'),
+        );
 
         return new CalculationResource($calculation);
     }
@@ -130,7 +131,10 @@ class OrderController extends Controller
      */
     public function store(OrderRequest $request)
     {
-        $order = $this->orderService->create($request->validated());
+        $order = $this->orderService->create(
+            $request->validated('currency_code'),
+            $request->validated('amount'),
+        );
 
         return new OrderResource($order);
     }

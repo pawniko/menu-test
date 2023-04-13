@@ -12,13 +12,17 @@ class CurrencyRepository extends Repository implements CurrencyRepositoryInterfa
 
     public function updateExchangeRates(array $exchangeRates): void
     {
+        $queryString = implode(
+            ' ',
+            array_map(
+                fn ($code, $rate) => "WHEN '{$code}' THEN {$rate} ",
+                array_keys($exchangeRates),
+                $exchangeRates
+            )
+        );
+
         $this->getModel()->query()
             ->whereIn('code', array_keys($exchangeRates))
-            ->update(['exchange_rate' => DB::raw('CASE code '.
-                implode(' ', array_map(function ($code, $rate) {
-                    return "WHEN '{$code}' THEN {$rate} ";
-                }, array_keys($exchangeRates), $exchangeRates))
-                .' END')
-            ]);
+            ->update(['exchange_rate' => DB::raw('CASE code ' . $queryString . ' END')]);
     }
 }

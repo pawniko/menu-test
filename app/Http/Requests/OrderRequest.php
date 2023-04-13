@@ -12,7 +12,7 @@ class OrderRequest extends FormRequest
     {
         return [
             'currency_code' => ['required', new Enum(AvailableCurrencies::class)],
-            'amount'        => 'required|numeric'
+            'amount'        => 'required|numeric',
         ];
     }
 }
