@@ -14,6 +14,20 @@ In order to use laravel sail you need to make sure that Docker is installed on y
 
 You can read more about laravel sail in official docs: [Laravel Sail Docs](https://laravel.com/docs/9.x/sail)
 
+If you decide to run project with laravel sail, you can do it with following commands:
+
+```sh
+composer require laravel/sail --dev
+
+./vendor/bin/sail up -d
+```
+
+For stopping containers you can use:
+
+```sh
+./vendor/bin/sail down
+```
+
 **1. Clone the repo using:**
    ```sh
    git clone https://github.com/pawniko/menu-test.git 
