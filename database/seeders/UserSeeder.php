@@ -35,10 +35,7 @@ class UserSeeder extends Seeder
 
         foreach (Currency::all() as $currency) {
             if (AvailableCurrencies::tryFrom($currency->code)) {
-                $this->orderService->create([
-                    'currency_code' => $currency->code,
-                    'amount'        => 100,
-                ]);
+                $this->orderService->create($currency->code, 100);
             }
         }
     }

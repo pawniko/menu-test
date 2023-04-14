@@ -40,7 +40,7 @@ class OrderDetails extends Mailable
         $fromCurrencyformatter->setTextAttribute(NumberFormatter::CURRENCY_CODE, config('currency.default'));
 
         $toCurrencyformatter = clone $fromCurrencyformatter;
-        $toCurrencyformatter->setTextAttribute(NumberFormatter::CURRENCY_CODE, $this->order->purchasedCurrency->code);
+        $toCurrencyformatter->setTextAttribute(NumberFormatter::CURRENCY_CODE, $this->order->purchased_currency);
 
         return new Content(
             markdown: 'emails.orders.details',

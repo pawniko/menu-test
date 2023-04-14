@@ -31,7 +31,7 @@ class OrderService
 
         return [
             'from_currency'         => config('currency.default'),
-            'purchased_currency_id' => $currency->id,
+            'purchased_currency'    => $currency->code,
             'currency_amount'       => $currencyAmount,
             'exchange_rate'         => $currency->exchange_rate,
             'surcharge_percent'     => $surcharge,

@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->string('from_currency')->default(config('currency.default'));
-            $table->unsignedBigInteger('purchased_currency_id');
+            $table->string('purchased_currency');
             $table->decimal('currency_amount',14, 6);
             $table->decimal('exchange_rate', 14, 6);
             $table->decimal('surcharge_percent',5);
@@ -26,7 +26,7 @@ return new class extends Migration
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users');
-            $table->foreign('purchased_currency_id')->references('id')->on('currencies');
+            $table->foreign('purchased_currency')->references('code')->on('currencies');
         });
     }
 

@@ -15,14 +15,15 @@ class OrderResource extends JsonResource
         $discountAmount  = round($this->discount_amount, 2);
 
         $response = [
-            'id'                => $this->id,
-            'currency_code'     => $this->purchasedCurrency->code,
-            'currency_amount'   => currencyFormatter($this->purchasedCurrency->code, $currencyAmount),
-            'exchange_rate'     => $this->exchange_rate,
-            'surcharge_percent' => $this->surcharge_percent . '%',
-            'surcharge_amount'  => currencyFormatter($defaultCurrency, $surchargeAmount),
-            'total_paid_amount' => currencyFormatter($defaultCurrency, $totalPaidAmount),
-            'created_at'        => $this->created_at->format('Y-m-d h:i:s'),
+            'id'                 => $this->id,
+            'from_currency'      => $this->from_currency,
+            'purchased_currency' => $this->purchased_currency,
+            'currency_amount'    => currencyFormatter($this->purchased_currency, $currencyAmount),
+            'exchange_rate'      => $this->exchange_rate,
+            'surcharge_percent'  => $this->surcharge_percent . '%',
+            'surcharge_amount'   => currencyFormatter($defaultCurrency, $surchargeAmount),
+            'total_paid_amount'  => currencyFormatter($defaultCurrency, $totalPaidAmount),
+            'created_at'         => $this->created_at->format('Y-m-d h:i:s'),
         ];
 
         if (!empty($this->discount_percent)) {

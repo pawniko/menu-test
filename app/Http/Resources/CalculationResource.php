@@ -14,9 +14,11 @@ class CalculationResource extends JsonResource
         $discountAmount  = round($this['discount_amount'], 2);
 
         $response = [
-            'exchange_rate'     => $this['exchange_rate'],
-            'surcharge_amount'  => currencyFormatter($defaultCurrency, $surchargeAmount),
-            'total_paid_amount' => currencyFormatter($defaultCurrency, $totalPaidAmount),
+            'from_currency'      => $this['from_currency'],
+            'purchased_currency' => $this['purchased_currency'],
+            'exchange_rate'      => $this['exchange_rate'],
+            'surcharge_amount'   => currencyFormatter($defaultCurrency, $surchargeAmount),
+            'total_paid_amount'  => currencyFormatter($defaultCurrency, $totalPaidAmount),
         ];
 
         if (!empty($this['discount_percent'])) {

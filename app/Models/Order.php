@@ -8,7 +8,8 @@ class Order extends Model
 {
     protected $fillable = [
         'user_id',
-        'purchased_currency_id',
+        'from_currency',
+        'purchased_currency',
         'currency_amount',
         'exchange_rate',
         'surcharge_percent',
@@ -16,7 +17,6 @@ class Order extends Model
         'total_paid_amount',
         'discount_percent',
         'discount_amount',
-        'status',
     ];
 
     public function user()
@@ -26,6 +26,6 @@ class Order extends Model
 
     public function purchasedCurrency()
     {
-        return $this->belongsTo(Currency::class, 'purchased_currency_id');
+        return $this->belongsTo(Currency::class, 'purchased_currency', 'code');
     }
 }

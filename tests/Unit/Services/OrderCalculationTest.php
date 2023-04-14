@@ -14,13 +14,7 @@ class OrderCalculationTest extends TestCase
 {
     public function test_order_service_calculation()
     {
-        $data = [
-            'currency_code' => 'EUR',
-            'amount'        => 100,
-        ];
-
         $currency                = new Currency();
-        $currency->id            = 1;
         $currency->code          = 'EUR';
         $currency->exchange_rate = 1;
 
@@ -36,7 +30,7 @@ class OrderCalculationTest extends TestCase
 
         $expectedResult = [
             'from_currency'         => config('currency.default'),
-            'purchased_currency_id' => 1,
+            'purchased_currency'    => 'EUR',
             'currency_amount'       => 100,
             'exchange_rate'         => 1,
             'surcharge_percent'     => 5,
@@ -46,7 +40,7 @@ class OrderCalculationTest extends TestCase
             'discount_amount'       => 0.1,
         ];
 
-        $result = $orderService->getCalculation($data);
+        $result = $orderService->getCalculation('EUR', 100);
 
         $this->assertEquals($expectedResult, $result);
     }

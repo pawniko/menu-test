@@ -30,35 +30,37 @@ export default {
             }
         })
             .then(response => response.json())
-            .then(data => {
-                this.results = data.data;
-
-                const exchangeRate = data.data.exchange_rate;
-                const surchargeAmount = data.data.surcharge_amount;
-                const totalPaidAmount = data.data.total_paid_amount;
-                const discountAmount = data.data.discount_amount;
-
+            .then(response => {
+                this.results = response.data;
                 this.tableCaption = 'Order calculation'
                 this.tableData = [
                     {
+                        label: 'Sell',
+                        value: response.data.from_currency
+                    },
+                    {
+                        label: 'Buy',
+                        value: response.data.purchased_currency
+                    },
+                    {
                         label: 'Exchange Rate',
-                        value: exchangeRate
+                        value: response.data.exchange_rate
                     },
                     {
                         label: 'Surcharge Amount',
-                        value: surchargeAmount
+                        value: response.data.surcharge_amount
                     },
                     {
                         label: 'Total Amount',
-                        value: totalPaidAmount
+                        value: response.data.total_paid_amount
                     }
                 ];
 
-                if (discountAmount) {
+                if (response.data.discount_amount) {
                     this.tableData.push(
                         {
                             label: 'Discount Amount',
-                            value: discountAmount
+                            value: response.data.discount_amount
                         }
                     );
                 }
@@ -84,33 +86,35 @@ export default {
             .then(response => response.json())
             .then(data => {
                 this.results = data.data;
-
-                const exchangeRate = data.data.exchange_rate;
-                const surchargeAmount = data.data.surcharge_amount;
-                const totalPaidAmount = data.data.total_paid_amount;
-                const discountAmount = data.data.discount_amount;
-
                 this.tableCaption = 'Order placed successfully, check your email.';
                 this.tableData = [
                     {
+                        label: 'Sell',
+                        value: data.data.from_currency
+                    },
+                    {
+                        label: 'Buy',
+                        value: data.data.purchased_currency
+                    },
+                    {
                         label: 'Exchange Rate',
-                        value: exchangeRate
+                        value: data.data.exchange_rate
                     },
                     {
                         label: 'Surcharge Amount',
-                        value: surchargeAmount
+                        value: data.data.surcharge_amount
                     },
                     {
                         label: 'Total Amount',
-                        value: totalPaidAmount
+                        value: data.data.total_paid_amount
                     }
                 ];
 
-                if (discountAmount) {
+                if (data.data.discount_amount) {
                     this.tableData.push(
                         {
                             label: 'Discount Amount',
-                            value: discountAmount
+                            value: data.data.discount_amount
                         }
                     );
                 }
