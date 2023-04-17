@@ -36,18 +36,12 @@ class OrderDetails extends Mailable
      */
     public function content(): Content
     {
-        $fromCurrencyformatter = new NumberFormatter(config('currency.formatter_local'), NumberFormatter::CURRENCY);
-        $fromCurrencyformatter->setTextAttribute(NumberFormatter::CURRENCY_CODE, config('currency.default'));
-
-        $toCurrencyformatter = clone $fromCurrencyformatter;
-        $toCurrencyformatter->setTextAttribute(NumberFormatter::CURRENCY_CODE, $this->order->purchased_currency);
-
         return new Content(
             markdown: 'emails.orders.details',
             with: [
-                'currencyAmount'  => $toCurrencyformatter->format($this->order->currency_amount),
-                'surchargeAmount' => $fromCurrencyformatter->format($this->order->surcharge_amount),
-                'totalPaidAmount' => $fromCurrencyformatter->format($this->order->total_paid_amount),
+                'currency_amount'   => currencyFormatter($this->order->purchased_currency, $this->order->currency_amount),
+                'surcharge_amount'  => currencyFormatter(config('currency.default'), $this->order->surcharge_amount),
+                'total_paid_amount' => currencyFormatter(config('currency.default'), $this->order->total_paid_amount),
             ],
         );
     }
